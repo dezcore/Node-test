@@ -1,13 +1,18 @@
-var http = require('http'),
-    fs = require('fs');
+const express = require('express')
+const app = express()
+const path = require('path');
 
-fs.readFile('./hello.html', function (err, html) {
-    if (err) {
-        throw err; 
-    }       
-    http.createServer(function(request, response) {  
-        response.writeHeader(200, {"Content-Type": "text/html"});  
-        response.write(html);  
-        response.end();  
-    }).listen(8000);
+//app.use(express.staticProvider(__dirname + '/public'));
+app.set("view options", {layout: false});
+app.use(express.static(__dirname + '/public'));
+
+app.get('/', function (req, res) {
+   // res.render('hello.html')
+    res.sendFile(path.join(__dirname+'/public/hello.html'));
+})
+
+app.get('/about',function(req,res){
+    res.sendFile(path.join(__dirname+'/about.html'));
 });
+
+app.listen(8000)
